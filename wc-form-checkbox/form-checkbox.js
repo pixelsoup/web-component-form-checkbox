@@ -21,7 +21,9 @@ class CustomCheckbox extends HTMLElement {
       } else {
           this.removeAttribute('checked');
       }
-      this.internals.setFormValue(this.checked ? this.getAttribute('value') : null); // Set value for form submission
+      // Set form value based on the value attribute or fallback to 'defaultCheckedValue' if not present
+      const formValue = this.checked ? this.getAttribute('value') || 'defaultCheckedValue' : null;
+      this.internals.setFormValue(formValue);
   }
 
   connectedCallback() {
@@ -76,7 +78,7 @@ class CustomCheckbox extends HTMLElement {
       label.addEventListener('click', () => {
           this.checked = !this.checked; // Toggle checked state
           this.updateAppearance(); // Update appearance on click
-          this.internals.setFormValue(this.checked ? this.getAttribute('value') : null); // Update form value on click
+          this.internals.setFormValue(this.checked ? this.getAttribute('value') || 'defaultCheckedValue' : null); // Update form value on click
       });
   }
 
