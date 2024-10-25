@@ -7,6 +7,10 @@ class CustomCheckbox extends HTMLElement {
       this.checked = false; // Initial state
   }
 
+  static get observedAttributes() {
+      return ['checked', 'value']; // Observe 'checked' and 'value' attributes
+  }
+
   get checked() {
       return this.hasAttribute('checked');
   }
@@ -17,7 +21,7 @@ class CustomCheckbox extends HTMLElement {
       } else {
           this.removeAttribute('checked');
       }
-      this.internals.setFormValue(this.checked ? 'on' : null); // Set value for form submission
+      this.internals.setFormValue(this.checked ? this.getAttribute('value') : null); // Set value for form submission
   }
 
   connectedCallback() {
@@ -25,11 +29,17 @@ class CustomCheckbox extends HTMLElement {
       this.updateAppearance(); // Set initial appearance
   }
 
+  attributeChangedCallback(name, oldValue, newValue) {
+      if (name === 'checked') {
+          this.updateAppearance(); // Update appearance when checked state changes
+      }
+  }
+
   render() {
       // Create a shadow root
       const shadow = this.attachShadow({ mode: 'open' });
 
-       // Create a link element to load external CSS
+      // Create a link element to load external CSS
       const link = document.createElement('link');
       link.setAttribute('rel', 'stylesheet');
       link.setAttribute('href', './wc-form-checkbox/form-checkbox.css'); // Path to CSS file
@@ -59,7 +69,6 @@ class CustomCheckbox extends HTMLElement {
 
       // Clear previous content and append new elements to shadow DOM
       shadow.innerHTML = ''; // Clear existing content in shadow DOM
-       // Append the link to the shadow root
       shadow.appendChild(link);
       shadow.appendChild(label);
 
@@ -67,6 +76,7 @@ class CustomCheckbox extends HTMLElement {
       label.addEventListener('click', () => {
           this.checked = !this.checked; // Toggle checked state
           this.updateAppearance(); // Update appearance on click
+          this.internals.setFormValue(this.checked ? this.getAttribute('value') : null); // Update form value on click
       });
   }
 
