@@ -11,8 +11,17 @@
 <body>
   <div class="containerPadded">
     <h1>Form Associated Custom Element</h1>
-    <form id="form" action="https://formspree.io/f/xrbgbnbz" method="POST">
-      <fieldset id="set">
+    <form id="myForm" action="https://formspree.io/f/xrbgbnbz" method="POST">
+      <span>Please select your pet:</span>
+      <custom-checkbox name="petType" value="dogs">Dogs</custom-checkbox>
+      <custom-checkbox name="petType" value="cats">Cats</custom-checkbox>
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+
+    <form id="form">
+      <fieldset id="set" action="https://formspree.io/f/xrbgbnbz" method="POST">
         <legend>This fieldset controls <code>x-checkbox</code></legend>
         <label for="xcheck">XCheckbox value</label>
         <x-checkbox id="xcheck"
@@ -24,17 +33,17 @@
                type="checkbox"
                value="native checkbox checked">
         <label for="submit">Submit to display form state</label>
-        <button id="submit" type="submit">Submit</button> <!-- Ensure button type is submit -->
+        <button id="submit">Submit</button>
       </fieldset>
     </form>
 
     <script>
-      document.getElementById('form').addEventListener('submit', async (event) => {
+      document.getElementById('myForm').addEventListener('submit', async (event) => {
         event.preventDefault(); // Prevent default form submission
 
         const formData = new FormData(event.target);
         const payload = Object.fromEntries(formData.entries());
-        console.log('Payload:', payload); // Log the payload for debugging
+        console.log('Payload:', payload); // Log the payload
 
         try {
           const response = await fetch(event.target.action, {
@@ -45,14 +54,11 @@
           if (response.ok) {
             const result = await response.json(); // Assuming JSON response
             console.log('Success:', result);
-            alert('Form submitted successfully!'); // Optional success message
           } else {
             console.error('Submission failed:', response.statusText);
-            alert('Submission failed. Please try again.');
           }
         } catch (error) {
           console.error('Error during submission:', error);
-          alert('An error occurred. Please try again.');
         }
       });
     </script>

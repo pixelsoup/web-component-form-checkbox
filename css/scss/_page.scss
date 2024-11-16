@@ -21,26 +21,10 @@
   align-items: center;
   cursor: pointer;
 }
-.box {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #007BFF;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s, border-color 0.3s;
-  position: relative; /* Ensure proper stacking context */
-}
-.box.checked {
-  background-color: #007BFF;
-  border-color: #0056b3;
-}
-.checkmark {
-  display: none;
-  color: white;
-  font-size: 16px;
-}
-.box.checked .checkmark {
-  display: block; /* Show checkmark when checked */
+
+#set {
+	grid-template-columns: max-content min-content;
+	place-items: center start;
+	column-gap: 1em;
+	display: grid;
 }
